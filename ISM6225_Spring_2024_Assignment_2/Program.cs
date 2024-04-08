@@ -7,9 +7,11 @@ WRITE YOUR CODE IN THE RESPECTIVE QUESTION FUNCTION BLOCK
 */
 
 using System.Text;
+using System.Threading.Channels;
 
 namespace ISM6225_Spring_2024_Assignment_2
 {
+
     class Program
     {
         static void Main(string[] args)
@@ -100,27 +102,26 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 if (nums.Length == 0)
-                    return 0;
+                    return 0; // Return 0 if the array is empty
 
-                int uniqueCount = 1;
+                int uniqueCount = 1; // Initialize count for unique elements
                 for (int i = 1; i < nums.Length; i++)
                 {
-                    if (nums[i] != nums[i - 1])
+                    
+                    if (nums[i] != nums[i - 1])// Check if the current element is different from the previous one
                     {
-                        nums[uniqueCount] = nums[i];
-                        uniqueCount++;
+                        nums[uniqueCount] = nums[i]; // Move current element to next unique position
+                        uniqueCount++; // Increment count of unique elements
                     }
                 }
 
-                return uniqueCount;
-            
+                return uniqueCount; // Return count of unique elements
             }
             catch (Exception)
             {
-                throw;
+                throw; // Propagate exceptions
             }
         }
-
         /*
         
         Question 2:
@@ -147,27 +148,28 @@ namespace ISM6225_Spring_2024_Assignment_2
         {
             try
             {
-                int index = 0;
+                int index = 0; // Initialize index to track non-zero elements
                 foreach (int num in nums)
                 {
                     if (num != 0)
                     {
-                        nums[index] = num;
-                        index++;
+                        nums[index] = num; // Move non-zero element to the current index
+                        index++; // Increment index to next position
                     }
                 }
 
+                
                 while (index < nums.Length)
                 {
                     nums[index] = 0;
                     index++;
                 }
 
-                return nums;
+                return nums; 
             }
             catch (Exception)
             {
-                throw;
+                throw; 
             }
         }
 
@@ -213,33 +215,45 @@ namespace ISM6225_Spring_2024_Assignment_2
         {
             try
             {
-                List<IList<int>> result = new List<IList<int>>();
-                Array.Sort(nums);
+                List<IList<int>> result = new List<IList<int>>(); // Initialize a list to store unique triplets
+                Array.Sort(nums); // Sort the input array
+
+                
                 for (int i = 0; i < nums.Length - 2; i++)
                 {
+                    
                     if (i == 0 || (i > 0 && nums[i] != nums[i - 1]))
                     {
                         int low = i + 1, high = nums.Length - 1, sum = 0 - nums[i];
+
+                       
                         while (low < high)
                         {
                             if (nums[low] + nums[high] == sum)
                             {
-                                result.Add(new List<int> { nums[i], nums[low], nums[high] });
+                                
+                                result.Add(new List<int> { nums[i], nums[low], nums[high] }); // Add the triplet to the result list
+
+                                // Skip duplicates for the remaining two elements
                                 while (low < high && nums[low] == nums[low + 1]) low++;
                                 while (low < high && nums[high] == nums[high - 1]) high--;
+
                                 low++;
                                 high--;
                             }
-                            else if (nums[low] + nums[high] < sum) low++;
-                            else high--;
+                            else if (nums[low] + nums[high] < sum)
+                                low++; // Increment low pointer for a smaller sum
+                            else
+                                high--; // Decrement high pointer for a larger sum
                         }
                     }
                 }
-                return result;
+
+                return result; 
             }
             catch (Exception)
             {
-                throw;
+                throw; 
             }
         }
 
@@ -264,7 +278,6 @@ namespace ISM6225_Spring_2024_Assignment_2
         nums[i] is either 0 or 1.
 
         */
-
         public static int FindMaxConsecutiveOnes(int[] nums)
         {
             try
@@ -276,15 +289,14 @@ namespace ISM6225_Spring_2024_Assignment_2
                 {
                     if (num == 1)
                     {
-                        currentConsecutiveOnes++;
-                        maxConsecutiveOnes = Math.Max(maxConsecutiveOnes, currentConsecutiveOnes);
+                        currentConsecutiveOnes++;  // Increment current consecutive ones if the current number is 1
+                        maxConsecutiveOnes = Math.Max(maxConsecutiveOnes, currentConsecutiveOnes);  // Update the maximum consecutive ones
                     }
                     else
                     {
-                        currentConsecutiveOnes = 0;
+                        currentConsecutiveOnes = 0;  // Reset current consecutive ones if the current number is not 1
                     }
                 }
-
                 return maxConsecutiveOnes;
             }
             catch (Exception)
@@ -323,7 +335,7 @@ namespace ISM6225_Spring_2024_Assignment_2
                 int decimalValue = 0;
                 int baseValue = 1; // Represents the base value of each digit in binary (2^0 = 1)
 
-                // Extract each digit from the binary number and add its contribution to the decimal value
+                
                 while (binary > 0)
                 {
                     int lastDigit = binary % 10; // Extract the last digit
@@ -370,26 +382,26 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 if (nums.Length < 2)
-                    return 0;
+                    return 0; // If there are less than 2 elements, maximum gap is 0
 
-                // Sort the array
-                Array.Sort(nums);
+                Array.Sort(nums); 
 
-                int maxDifference = 0;
-                // Find the maximum difference between successive elements
+                int maxDifference = 0; // Initialize maximum difference between elements
+                                       
                 for (int i = 1; i < nums.Length; i++)
                 {
-                    maxDifference = Math.Max(maxDifference, nums[i] - nums[i - 1]);
+                   
+                   
+                    maxDifference = Math.Max(maxDifference, nums[i] - nums[i - 1]); // Update maxDifference with the maximum difference between successive elements
                 }
 
-                return maxDifference;
+                return maxDifference; 
             }
             catch (Exception)
             {
-                throw;
+                throw; 
             }
         }
-
         /*
 
         Question:7
@@ -421,25 +433,29 @@ namespace ISM6225_Spring_2024_Assignment_2
         {
             try
             {
-                Array.Sort(nums);
-                int maxPerimeter = 0;
-                int n = nums.Length;
+                Array.Sort(nums); // Sort the input array
 
-                // Iterate from the end of the array to find the largest perimeter
+                int maxPerimeter = 0; // Initialize the maximum perimeter
+
+                int n = nums.Length; // Get the length of the array
+
+                
                 for (int i = n - 1; i >= 2; i--)
                 {
+                    
                     if (nums[i - 2] + nums[i - 1] > nums[i]) // Check if the triplet forms a valid triangle
                     {
+                        
                         maxPerimeter = nums[i - 2] + nums[i - 1] + nums[i]; // Update the maximum perimeter
                         break; // Since we need to find the largest perimeter, we can stop once we find a valid triangle
                     }
                 }
 
-                return maxPerimeter;
+                return maxPerimeter; // Return the maximum perimeter
             }
             catch (Exception)
             {
-                throw;
+                throw; // Propagate any exceptions
             }
         }
 
@@ -488,17 +504,22 @@ namespace ISM6225_Spring_2024_Assignment_2
         {
             try
             {
-                while (s.Contains(part)) // Continue as long as 'part' exists in 's'
+                
+                while (s.Contains(part)) // Continue removing occurrences of 'part' until it no longer exists in 's'
                 {
-                    int index = s.IndexOf(part); // Find the index of the leftmost occurrence of 'part'
+                    
+                    int index = s.IndexOf(part);// Find the index of the leftmost occurrence of 'part'
+
+                    
                     s = s.Remove(index, part.Length); // Remove 'part' from 's'
                 }
 
-                return s; // Return 's' after removing all occurrences of 'part'
+               
+                return s;
             }
             catch (Exception)
             {
-                throw;
+                throw; // Propagate any exceptions
             }
         }
 
